@@ -63,11 +63,73 @@ def scrape_all():
 
     mars_df = pd.read_json(mars_table)
     #mars_df
-### Mars Hemispheres
-### Webpage does not respond
-#url_4 = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
-#browser.visit(url_4)
-#print(url_4)
+    ### Mars Hemispheres
+    ### Webpage does not respond
+    ###url_4 = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    ### Used https://www.planetary.org/ page instead
+
+
+    #Schiaparelli Hemisphere
+    url_4 = 'https://www.planetary.org/space-images/mars-schiaparelli-hemisphere'
+    browser.visit(url_4)
+    html = browser.html
+
+    temp_title = browser.find_by_tag('h1')
+    schiaparelli_title = temp_title[0].text
+    browser.find_by_tag('figure').click()
+
+    soup = bs(browser.html, 'html.parser')
+    schiaparelli_img = soup.find("img")['src']
+    schiaparelli_img
+
+
+    #Valles Marineris Hemisphere
+    url_5 = 'https://www.planetary.org/space-images/20140202_valles_marineris_enhanced'
+    browser.visit(url_5)
+    html = browser.html
+
+    temp_title = browser.find_by_tag('h1')
+    valles_marineris_title = temp_title[0].text
+    browser.find_by_tag('figure').click()
+
+    soup = bs(browser.html, 'html.parser')
+    valles_marineris_img = soup.find("img")['src']
+    valles_marineris_img
+
+    #Cerberurs Hemisphere
+    url_6 = 'https://www.planetary.org/space-images/20140202_cerberus_enhanced'
+    browser.visit(url_6)
+    html = browser.html
+
+    temp_title = browser.find_by_tag('h1')
+    cerberus_title = temp_title[0].text
+    browser.find_by_tag('figure').click()
+
+    soup = bs(browser.html, 'html.parser')
+    cerberus_img = soup.find("img")['src']
+    cerberus_img
+
+    #Syrtis Major Hemisphere
+    url_7 = 'https://www.planetary.org/space-images/20140202_syrtis_major_enhanced'
+    browser.visit(url_7)
+    html = browser.html
+
+    temp_title = browser.find_by_tag('h1')
+    syrtis_major_title = temp_title[0].text
+    browser.find_by_tag('figure').click()
+
+    soup = bs(browser.html, 'html.parser')
+    syrtis_major_img = soup.find("img")['src']
+    syrtis_major_img
+
+    hemisphere_image_urls = [
+        {"title": valles_marineris_title, "img_url": valles_marineris_img},
+        {"title": cerberus_title, "img_url": cerberus_img},
+        {"title": schiaparelli_title, "img_url": schiaparelli_img},
+        {"title": syrtis_major_title, "img_url": syrtis_major_img},
+    ]
+
+    hemisphere_image_urls
     browser.quit()
 
     mars_data = {
@@ -75,8 +137,7 @@ def scrape_all():
         "Mars_News_Article": article.text,
         "Mars_Featured_Image": pic_url,
         "Mars_Facts": mars_df,
-        #"Mars_Hemisphere": hemisphere_image_urls
-
+        "Mars_Hemisphere": hemisphere_image_urls
         }
     return mars_data
 
