@@ -137,7 +137,7 @@ def scrape_all():
         "Mars_News_title": title.text,
         "Mars_News_Article": article.text,
         "Mars_Featured_Image": pic_url,
-        "Mars_Facts": mars_df,
+        "Mars_Facts": mars_table,
         "Mars_Hemisphere": hemisphere_image_urls
         }
     return mars_data

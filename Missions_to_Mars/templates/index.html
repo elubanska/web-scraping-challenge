@@ -13,17 +13,14 @@
     <div class="container text-center">
       <h1 class="jumbotron">Mission to Mars</h1>
       <div>
-                  <div class="col-lg-4">
-              <div class="card" style="width: 20rem;">
-                  <div class="card-body">
-                    <h4 class="card-title">{{ item.type }}</h4>
-                    <h6 class="card-subtitle mb-2 text-muted">Cost: {{ item.cost }}</h6>
-                    <p class="card-text">Potential Revenue: {{ item.cost * item.stock}}</p>
-                  </div>
-                </div>
-            </div>
-            {% endfor %}
-
+        <div class ="row">
+          <div class = "col-md-12">
+              <h2> Latest Mars News</h2>
+              <h1>{{ db_data.Mars_News_title }}</h1>
+              <h4>{{ db_data.Mars_News_Article }}</h4>
+             
+          </div>
+      </div>  
       </div>
     </div>
   </body>
