@@ -130,6 +130,7 @@ def scrape_all():
     ]
 
     hemisphere_image_urls
+    time.sleep(5)
     browser.quit()
 
     mars_data = {
