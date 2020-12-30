@@ -1,26 +1,84 @@
-from flask import Flask, render_template
-import pymongo
+#!/usr/bin/env python
+# coding: utf-8
 
-app = Flask(__name__)
+from bs4 import BeautifulSoup as bs
+import requests
+import splinter
+import json
+import pandas as pd
+import time
 
-# setup mongo connection
-conn = "mongodb://localhost:27017"
-client = pymongo.MongoClient(conn)
+def scrape_all():
+    executable_path = {'executable_path' : 'c:/Users/eluba/Documents/GitHub/web-scraping-challenge/Missions_to_Mars/chromedriver.exe'}
+    browser = splinter.Browser('chrome', **executable_path)
 
-# connect to mongo db and collection
-db = client.store_inventory
-produce = db.produce
+### NASA Mars News
+    url = 'https://mars.nasa.gov/news/'
+    browser.visit(url)
+    time.sleep(5)
+    html = browser.html
+    soup = bs(html, 'html.parser')
 
+    content = soup.find("div", class_='list_text')
+    title = content.find("div", class_='content_title')
+    #title.text
 
-@app.route("/")
-def index():
-    # write a statement that finds all the items in the db and sets it to a variable
-    inventory = list(produce.find())
-    print(inventory)
+    article = content.find("div", class_='article_teaser_body')
+    #article.text
 
-    # render an index.html template and pass it the data you retrieved from the database
-    return render_template("index.html", inventory=inventory)
+### JPL Mars Space Images
+    url_2 = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    browser.visit(url_2)
+    html = browser.html
 
+    #soup = bs(html, 'html.parser')
+    #featured_image = soup.find("article", class_='carousel_item')['style']
+    #latter = featured_image.split('/spaceimages/')[1].split("'")[0]
+    #former = url.split('?')[0]
+    #final_url = former + latter
+    #final_url
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    browser.find_by_id("full_image").click()
+    browser.find_by_text("more info     ").click()
+
+    html = browser.html
+    soup = bs(html, 'html.parser')
+    featured_img = soup.find("img", class_='main_image')['src']
+    featured_img
+    pic_url = f"https://www.jpl.nasa.gov{featured_img}"
+    #pic_url
+
+### Mars Facts
+    url_3 = 'https://space-facts.com/mars/'
+    response = requests.get(url_3)
+    soup = bs(response.text, 'html.parser')
+    table = soup.find_all('table')[0]
+#print(table)
+
+    mars_facts = pd.read_html(str(table))
+    #print(mars_facts)
+
+    mars_table = mars_facts[0].to_json(orient='records')
+    #print(mars_table)
+
+    mars_df = pd.read_json(mars_table)
+    #mars_df
+### Mars Hemispheres
+### Webpage does not respond
+#url_4 = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+#browser.visit(url_4)
+#print(url_4)
+    browser.quit()
+
+    mars_data = {
+        "Mars_News_title": title.text,
+        "Mars_News_Article": article.text,
+        "Mars_Featured_Image": pic_url,
+        "Mars_Facts": mars_df,
+        #"Mars_Hemisphere": hemisphere_image_urls
+
+        }
+    return mars_data
+
+data_test = scrape_all()
+print(data_test)
