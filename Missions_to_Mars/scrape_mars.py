@@ -142,5 +142,5 @@ def scrape_all():
         }
     return mars_data
 
-data_test = scrape_all()
-print(data_test)
+#data_test = scrape_all()
+#print(data_test)
