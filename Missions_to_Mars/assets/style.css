@@ -3,21 +3,22 @@ body {
 }
 
 h1 {
-  text-align: center;
+  text-align: left;
   background-color: grey;
   color:  rgb(4, 160, 144);
 }
 
 h2 {
+  text-align: left;
   color:  rgb(4, 160, 144);
 }
 
 h3 {
-  text-align: center;
+  text-align: left;
   color:  rgb(4, 160, 144);
 }
 h4 {
-  text-align: center;
+  text-align: left;
   color: rgb(4, 160, 144);
 }
 h5 {

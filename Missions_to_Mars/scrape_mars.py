@@ -31,13 +31,6 @@ def scrape_all():
     browser.visit(url_2)
     html = browser.html
 
-    #soup = bs(html, 'html.parser')
-    #featured_image = soup.find("article", class_='carousel_item')['style']
-    #latter = featured_image.split('/spaceimages/')[1].split("'")[0]
-    #former = url.split('?')[0]
-    #final_url = former + latter
-    #final_url
-
     browser.find_by_id("full_image").click()
     browser.find_by_text("more info     ").click()
 
@@ -63,6 +56,10 @@ def scrape_all():
 
     mars_df = pd.read_json(mars_table)
     #mars_df
+
+    final_mars_df = pd.DataFrame({'':mars_df[0],'Mars':mars_df[1]})
+    #final_mars_df
+
     ### Mars Hemispheres
     ### Webpage does not respond
     ###url_4 = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
@@ -137,7 +134,7 @@ def scrape_all():
         "Mars_News_title": title.text,
         "Mars_News_Article": article.text,
         "Mars_Featured_Image": pic_url,
-        "Mars_Facts": mars_table,
+        "Mars_Facts": final_mars_df.to_html(),
         "Mars_Hemisphere": hemisphere_image_urls
         }
     return mars_data
